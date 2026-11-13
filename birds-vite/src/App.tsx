@@ -1,25 +1,18 @@
-import { gql } from '@apollo/client';
-import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import { client } from './lib/apollo';
+import Layout from './components/Layout';
+import BirdPage from './pages/BirdPage';
+import BirdsPage from './pages/BirdsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
-const App = () => {
-	useEffect(() => {
-		client
-			.query({
-				query: gql`
-					query Birds {
-						birds {
-							id
-							english_name
-						}
-					}
-				`,
-			})
-			.then((result) => console.log(result.data));
-	}, []);
-
-	return <div />;
-};
+const App = () => (
+	<Routes>
+		<Route element={<Layout />}>
+			<Route index element={<BirdsPage />} />
+			<Route path="birds/:id" element={<BirdPage />} />
+			<Route path="*" element={<NotFoundPage />} />
+		</Route>
+	</Routes>
+);
 
 export default App;

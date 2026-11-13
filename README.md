@@ -49,9 +49,17 @@ type Bird {
 type Note {
 	id: ID!
 	comment: String!
-	timestamp: Int! # Milliseconds from epoch.
+	timestamp: Int! # GraphQL Int is signed 32-bit; use Unix seconds for current dates.
 }
 ```
+
+Although the API schema labels note timestamps as milliseconds, epoch milliseconds
+exceed GraphQL's signed 32-bit `Int` range. The app therefore sends and reads
+timestamps as Unix seconds.
+
+The notes API has no separate title field. The app stores a note title in the
+`comment` value and displays it separately; existing comments without a title
+continue to display as plain note text.
 
 As a starting point, a [Vite](https://vite.dev/) app is provided along with a client that you can
 use to query and mutate data. You are not required to use this app or client, feel free to

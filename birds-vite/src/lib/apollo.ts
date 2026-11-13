@@ -1,9 +1,8 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 
+// Requests go through the Bun server (server.ts), which adds the Authorization
+// header and forwards them to the GraphQL API, so the token never reaches the browser.
 export const client = new ApolloClient({
-	uri: '/api/graphql',
+	link: new HttpLink({ uri: '/api/graphql' }),
 	cache: new InMemoryCache(),
-	headers: {
-		Authorization: `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`,
-	},
 });
